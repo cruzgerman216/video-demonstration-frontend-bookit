@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule } from '@angular/router';
 import { AuthGuard } from './shared/auth/auth.guard';
+import { SessionGuard } from './shared/auth/session.guard';
 
 const appRoutes = [
   { path: '', redirectTo: '/bookshelf', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const appRoutes = [
   },
   {
     path: 'auth',
+    canActivate: [SessionGuard],
     loadChildren: () =>
       import('./shared/auth/auth.module').then((m) => m.AuthModule),
   },
