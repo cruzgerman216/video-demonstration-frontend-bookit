@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 export class AuthComponent implements OnInit {
   authObsrv: Observable<AuthResponseData>;
   errMsg: string = null;
+  msg:string = null; 
+
   isLoginMode = true;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -42,8 +44,17 @@ export class AuthComponent implements OnInit {
     this.authObsrv.subscribe(
       (res) => {
         console.log('AUTH RESPONSE SUCCESS:', res);
-        if(!this.isLoginMode) this.isLoginMode = !this.isLoginMode
-        
+        // To Navigate the user 
+        // CHECK 1: in login mode?
+        // CHECK 2: Was it successful?  X
+
+        if(this.isLoginMode){
+          this.router.navigate(['bookshelf'])
+        }else{
+          this.isLoginMode = !this.isLoginMode
+          this.msg = "Thank you for signing up! Please login!"
+        }
+
         if (this.errMsg) this.errMsg = null;
         // this.router.navigate(['bookshelf']);
       },
