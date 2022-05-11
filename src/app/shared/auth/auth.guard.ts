@@ -16,10 +16,16 @@ export class AuthGuard implements CanActivate {
     return this.authService.currUser.pipe(
       take(1),
       map((user) => {
-        const isAuth = !!user;
-
-        if (isAuth) return true;
-        if (!isAuth) return this.router.createUrlTree(['auth']);
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        // if userData persists in the browser
+        // if so, navigate to bookshelf
+        if (userData) {
+          this.authService.autoSignIn();
+          return true;
+        } else {
+          // otherwise, navigate back to auth
+          return this.router.createUrlTree(['auth']);
+        }
       })
     );
   }
