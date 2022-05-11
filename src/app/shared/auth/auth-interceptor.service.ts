@@ -17,13 +17,14 @@ export class AuthInterceptorService implements HttpInterceptor {
       take(1),
       exhaustMap((user) => {
         // Make sure we have a user
-        if (!user) return next.handle(req);
+        if (!user || req.url.includes("http://openlibrary.org/search.json?q=")) return next.handle(req);
 
         // Modify the reqest to attach the access token
         const modifiedReq = req.clone({
-          params: new HttpParams().set('auth', user.token),
-        });
-
+          setHeaders: {
+            Authorization: "Bearer " + user.token
+          }
+        })
         // Return the modified request
         return next.handle(modifiedReq);
       })
