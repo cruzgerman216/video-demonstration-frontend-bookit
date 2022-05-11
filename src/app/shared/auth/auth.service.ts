@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment.prod';
 const SIGN_UP_URL =
   'https://paducah-bookit-api.herokuapp.com/api/v1/users/create';
 const SIGN_IN_URL =
-  'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
+  'https://paducah-bookit-api.herokuapp.com/api/v1/users/login';
 
 export interface AuthResponseData {
   kind: string;
@@ -48,17 +48,18 @@ export class AuthService {
   //   Sign In!
   signIn(email: string, password: string) {
     return this.http
-      .post<AuthResponseData>(SIGN_IN_URL + environment.firebaseAPIKey, {
+      .post<any>(SIGN_IN_URL,{
         email,
-        password,
-        returnSecureToken: true,
+        password
       })
       .pipe(
         tap((res) => {
           // Use "object destructuring" to get acess to all response values
-          const { email, localId, idToken, expiresIn } = res;
+          const {email, id} = res.payload.user
+          const {expiry, value} = res.payload.token
+          const expiresIn = new Date(expiry).getTime() - Date.now()
           // Pass the response values into handleAuth method
-          this.handleAuth(email, localId, idToken, +expiresIn);
+          this.handleAuth(email, id, value, expiresIn);
         })
       );
   }
@@ -107,14 +108,14 @@ export class AuthService {
 
   handleAuth(email: string, userId: string, token: string, expiresIn: number) {
     // Create Expiration Date for Token
-    const expDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const expDate = new Date(new Date().getTime() + expiresIn);
 
     // Create a new user based on the info passed in . . . and emit that user
     const formUser = new User(email, userId, token, expDate);
     this.currUser.next(formUser);
 
     // Set a new timer for expiration token
-    this.autoSignOut(expiresIn * 1000);
+    this.autoSignOut(expiresIn);
 
     // Save the new user to localStorage
     localStorage.setItem('userData', JSON.stringify(formUser));
