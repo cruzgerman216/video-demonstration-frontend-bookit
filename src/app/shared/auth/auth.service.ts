@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment.prod';
 
 const SIGN_UP_URL =
-  'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=';
+  'https://paducah-bookit-api.herokuapp.com/api/v1/users/create';
 const SIGN_IN_URL =
   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
 
@@ -39,19 +39,10 @@ export class AuthService {
   //   Sign UP!
   signUp(email: string, password: string) {
     return this.http
-      .post<AuthResponseData>(SIGN_UP_URL + environment.firebaseAPIKey, {
+      .post<any>(SIGN_UP_URL, {
         email,
-        password,
-        returnSecureToken: true,
+        password
       })
-      .pipe(
-        tap((res) => {
-          // Use "object destructuring" to get acess to all response values
-          const { email, localId, idToken, expiresIn } = res;
-          // Pass the response values into handleAuth method
-          this.handleAuth(email, localId, idToken, +expiresIn);
-        })
-      );
   }
 
   //   Sign In!

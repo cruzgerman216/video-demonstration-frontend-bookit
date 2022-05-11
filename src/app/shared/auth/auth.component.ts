@@ -42,8 +42,10 @@ export class AuthComponent implements OnInit {
     this.authObsrv.subscribe(
       (res) => {
         console.log('AUTH RESPONSE SUCCESS:', res);
+        if(!this.isLoginMode) this.isLoginMode = !this.isLoginMode
+        
         if (this.errMsg) this.errMsg = null;
-        this.router.navigate(['bookshelf']);
+        // this.router.navigate(['bookshelf']);
       },
       (err) => {
         console.log('AUTH RESPONSE ERROR:', err);
