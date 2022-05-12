@@ -27,11 +27,13 @@ export class HttpService {
   }
 
   // Fetch books from Firebase DB
-  fetchBooksFromFirebase() {
-    return this.http.get(this.firebaseRootURL, {}).pipe(
-      tap((books: Book[]) => {
-        this.bookshelfService.setBooks(books);
-      })
-    );
+  fetchBooks() {
+    return this.http
+      .get('https://paducah-bookit-api.herokuapp.com/api/v1/books/my_books')
+      .pipe(
+        tap((res: any) => {
+          this.bookshelfService.setBooks(res.payload);
+        })
+      );
   }
 }

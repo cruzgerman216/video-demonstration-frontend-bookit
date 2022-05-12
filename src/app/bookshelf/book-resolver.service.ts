@@ -19,7 +19,7 @@ export class BookResolverService implements Resolve<Book[]> {
     const books = this.bookshelfService.getBooks();
 
     if (books.length === 0) {
-      return this.httpService.fetchBooksFromFirebase() || [];
+      return this.httpService.fetchBooks() || [];
     } else {
       return books;
     }
