@@ -12,6 +12,7 @@ const routes: Routes = [
     path: '',
     component: BookshelfComponent,
     canActivate: [AuthGuard],
+    resolve: [BookResolverService],
     children: [
       {
         path: '',
@@ -24,12 +25,10 @@ const routes: Routes = [
       {
         path: ':id',
         component: BookDetailsComponent,
-        resolve: [BookResolverService],
       },
       {
         path: ':id/edit',
         component: BookshelfEditorComponent,
-        resolve: [BookResolverService],
       },
     ],
   },

@@ -41,39 +41,5 @@
         >
       </li>
     </ul>
-    <ul class="navbar-nav">
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          style="cursor: pointer"
-          id="navbarDropdownMenuLink"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          [attr.aria-expanded]="show"
-          (click)="show = !show"
-          [class.show]="show"
-        >
-          Settings
-        </a>
-        <div
-          class="dropdown-menu"
-          aria-labelledby="navbarDropdownMenuLink"
-          [class.show]="show"
-        >
-          <a
-            class="dropdown-item"
-            style="cursor: pointer"
-            (click)="onSaveData()"
-            >Save Data</a
-          >
-          <a
-            class="dropdown-item"
-            style="cursor: pointer"
-            (click)="onFetchData()"
-            >Fetch Data</a
-          >
-        </div>
-      </li>
-    </ul>
   </div>
 </nav>
