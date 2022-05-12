@@ -28,14 +28,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.authService.currUser.unsubscribe();
   }
 
-  onSaveData() {
-    this.httpService.saveBooksToFirebase();
-  }
-
-  onFetchData() {
-    this.httpService.fetchBooksFromFirebase().subscribe();
-  }
-
   onSignOut() {
     this.authService.signOut();
   }
