@@ -11,7 +11,7 @@ import { HttpService } from 'src/app/shared/http/http.service';
   styleUrls: ['./bookshelf-editor.component.css'],
 })
 export class BookshelfEditorComponent implements OnInit {
-  idx: number;
+  id: number;
   isEditMode = false;
   bookDetails: any = {
     title: '',
@@ -29,12 +29,12 @@ export class BookshelfEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.idx = +params['id'];
+      this.id = +params['id'];
       this.isEditMode = params['id'] != null;
 
       // If we are in "edit mode" => set the initial values for "bookDetails"
       if (this.isEditMode) {
-        this.bookDetails = this.bookshelfService.getBook(this.idx);
+        this.bookDetails = this.bookshelfService.getBookById(this.id);
       }
     });
   }
@@ -49,10 +49,25 @@ export class BookshelfEditorComponent implements OnInit {
     // 3. Conditional statement to call different methods/functions depending on what "mode" we are in
     if (this.isEditMode) {
       // Edit the book
-      this.bookshelfService.updateBook(this.idx, this.bookDetails);
+      let updatedBook = this.bookDetails;
+      updatedBook.id = this.id;
+
+      // get index of the book
+      let idx = this.bookshelfService
+        .getBooks()
+        .findIndex((book) => book.id === this.id);
+
+      // send a request to update the book
+      this.httpService.updateBook(updatedBook).subscribe((res: any) => {
+        if (res.success) {
+          console.log('UPDATED BOOK SUCCESSFUL', res);
+          // update the view
+          this.bookshelfService.updateBook(idx, this.bookDetails);
+        }
+      });
     } else {
       // Create a new book
-      this.httpService.saveBook(this.bookDetails)
+      this.httpService.saveBook(this.bookDetails);
     }
 
     // 4. Reset the form
