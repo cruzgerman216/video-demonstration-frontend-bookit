@@ -6,7 +6,8 @@ export class Book {
     public coverImagePath?: string,
     public price?: number,
     public firstPublishYear?: number,
-    public isbn?: string
+    public isbn?: string,
+    public id?:number
   ) {}
 }
 

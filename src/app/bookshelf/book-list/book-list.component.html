@@ -3,11 +3,11 @@
     class="col-md-12"
     *ngFor="let bookElement of myBooks | sortBooks: sortField; let i = index"
   >
-    <app-book [book]="bookElement" [idx]="i"></app-book>
+    <app-book [book]="bookElement" [id]="bookElement.id"></app-book>
     <button
       class="float-right"
       style="border: none; font-size: 16px"
-      (click)="onRemoveBook(i)"
+      (click)="onRemoveBook(bookElement.id)"
     >
       &minus;
     </button>

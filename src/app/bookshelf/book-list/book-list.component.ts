@@ -3,6 +3,7 @@ import { BookshelfService } from './../bookshelf.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { HttpService } from 'src/app/shared/http/http.service';
 
 @Component({
   selector: 'app-book-list',
@@ -19,7 +20,8 @@ export class BookListComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private bookshelfService: BookshelfService
+    private bookshelfService: BookshelfService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
@@ -48,8 +50,15 @@ export class BookListComponent implements OnInit, OnDestroy {
     }
   }
 
-  onRemoveBook(idx: number) {
-    this.bookshelfService.removeBook(idx);
+  onRemoveBook(id: number) {
+    // send request to api
+    this.httpService.deleteBook(id).subscribe((res: any) => {
+      console.log('REMOVED BOOK', res);
+      if (res.success) {
+        // adjust view
+        this.bookshelfService.removeBook(id);
+      }
+    });
   }
 
   onNewBook() {

@@ -32,4 +32,8 @@ export class HttpService {
         })
       );
   }
+
+  deleteBook(id:number){
+    return this.http.delete(`https://paducah-bookit-api.herokuapp.com/api/v1/books/${id}`)
+  }
 }

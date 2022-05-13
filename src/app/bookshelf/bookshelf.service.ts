@@ -34,14 +34,19 @@ export class BookshelfService {
     this.bookListChanged.next(this.myBooks.slice());
   }
 
+
+  getBookById(id){
+    return this.myBooks.find((book:Book) => book.id === id)
+  }
   // DELETE
-  removeBook(idx: number) {
-    if (idx !== -1) {
-      // We found a book at the index we passed in
-      this.bookSelected.next(this.myBooks[idx]);
-      this.myBooks.splice(idx, 1);
-      this.bookListChanged.next(this.myBooks.slice());
-    }
+  removeBook(id: number) {
+    // We found a book at the index we passed in
+    this.bookSelected.next(this.getBookById(id));
+    // removing the book
+    this.myBooks = this.myBooks.filter((book:Book) => book.id != id)
+
+    // Update view
+    this.bookListChanged.next(this.myBooks.slice());
   }
 
   setBooks(books: Book[] | []) {
