@@ -10,7 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 })
 export class BookDetailsComponent implements OnInit {
   book: Book;
-  idx: number;
+  id: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -20,16 +20,16 @@ export class BookDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.idx = +params['id'];
-      this.book = this.bookshelfService.getBook(this.idx);
+      this.id = +params['id'];
+      this.book = this.bookshelfService.getBookById(this.id);
     });
   }
 
   onEditBook() {
-    this.router.navigate(['../', this.idx, 'edit'], { relativeTo: this.route });
+    this.router.navigate(['../', this.id, 'edit'], { relativeTo: this.route });
   }
 
   onRemoveBook() {
-    this.bookshelfService.removeBook(this.idx);
+    this.bookshelfService.removeBook(this.id);
   }
 }
