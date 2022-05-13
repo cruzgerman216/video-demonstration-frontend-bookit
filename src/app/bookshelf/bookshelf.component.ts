@@ -28,7 +28,7 @@ export class BookshelfComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.bookSelectedSub = this.bookshelfService.bookSelected.subscribe(
       (book) => {
-        const alertMsg = `Successfully removed ${book.title} from your personal library.`;
+        const alertMsg = `Successfully changed.`;
         this.removeBookAlert(alertMsg);
       }
     );

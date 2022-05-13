@@ -10,6 +10,7 @@ import {
   keyframes,
   style,
 } from '@angular/animations';
+import { HttpService } from 'src/app/shared/http/http.service';
 
 @Component({
   selector: 'app-book-results',
@@ -54,7 +55,8 @@ export class BookResultsComponent implements OnInit {
 
   constructor(
     private bookshelfService: BookshelfService,
-    private libraryService: LibraryService
+    private libraryService: LibraryService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +69,7 @@ export class BookResultsComponent implements OnInit {
 
   onSaveBook(book: Book) {
     // Pass this to the "bookshelfService" "myBooks" array
-    this.bookshelfService.saveBook(book);
+    // this.bookshelfService.saveBook(book);
+    this.httpService.saveBook(book)
   }
 }

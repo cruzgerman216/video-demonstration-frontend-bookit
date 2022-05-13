@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { BookshelfService } from '../bookshelf.service';
 import { Book } from 'src/app/shared/book/book.model';
+import { HttpService } from 'src/app/shared/http/http.service';
 
 @Component({
   selector: 'app-bookshelf-editor',
@@ -22,7 +23,8 @@ export class BookshelfEditorComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private bookshelfService: BookshelfService
+    private bookshelfService: BookshelfService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +52,7 @@ export class BookshelfEditorComponent implements OnInit {
       this.bookshelfService.updateBook(this.idx, this.bookDetails);
     } else {
       // Create a new book
-      this.bookshelfService.saveBook(this.bookDetails);
+      this.httpService.saveBook(this.bookDetails)
     }
 
     // 4. Reset the form
