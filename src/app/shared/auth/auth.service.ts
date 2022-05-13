@@ -38,26 +38,25 @@ export class AuthService {
 
   //   Sign UP!
   signUp(email: string, password: string) {
-    return this.http
-      .post<any>(SIGN_UP_URL, {
-        email,
-        password
-      })
+    return this.http.post<any>(SIGN_UP_URL, {
+      email,
+      password,
+    });
   }
 
   //   Sign In!
   signIn(email: string, password: string) {
     return this.http
-      .post<any>(SIGN_IN_URL,{
+      .post<any>(SIGN_IN_URL, {
         email,
-        password
+        password,
       })
       .pipe(
         tap((res) => {
           // Use "object destructuring" to get acess to all response values
-          const {email, id} = res.payload.user
-          const {expiry, value} = res.payload.token
-          const expiresIn = new Date(expiry).getTime() - Date.now()
+          const { email, id } = res.payload.user;
+          const { expiry, value } = res.payload.token;
+          const expiresIn = new Date(expiry).getTime() - Date.now();
           // Pass the response values into handleAuth method
           this.handleAuth(email, id, value, expiresIn);
         })
@@ -66,13 +65,25 @@ export class AuthService {
 
   // Sign Out!
   signOut() {
-    this.currUser.next(null);
+    // send a request to logout
+    this.http
+      .delete('https://paducah-bookit-api.herokuapp.com/api/v1/users/logout')
+      .subscribe((res: any) => {
+        console.log('RES LOGOUT', res);
+        if(res.success){
+          this.currUser.next(null);
 
-    localStorage.removeItem('userData');
-
-    if (this.tokenExpTimer) clearTimeout(this.tokenExpTimer);
-
-    this.router.navigate(['auth']);
+          localStorage.removeItem('userData');
+  
+          if (this.tokenExpTimer) clearTimeout(this.tokenExpTimer);
+  
+          this.router.navigate(['auth']);
+        }else{
+          // prompt the user that logged out didn't work
+        }
+      });
+    // clear the current user from the app
+    // navigate to the auth
   }
 
   // Auto Sign In
